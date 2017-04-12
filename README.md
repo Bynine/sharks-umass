@@ -1,2 +1,0 @@
-# sharks-umass
-Character recognition
