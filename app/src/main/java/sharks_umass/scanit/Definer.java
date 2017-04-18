@@ -5,4 +5,8 @@ package sharks_umass.scanit;
  */
 
 public class Definer {
+
+    String define(){
+        return "defined word";
+    }
 }

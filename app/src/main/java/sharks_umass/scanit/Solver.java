@@ -5,4 +5,8 @@ package sharks_umass.scanit;
  */
 
 public class Solver {
+
+    String solve(){
+        return "solved problem";
+    }
 }

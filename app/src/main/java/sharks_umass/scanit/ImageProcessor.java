@@ -5,4 +5,14 @@ package sharks_umass.scanit;
  */
 
 public class ImageProcessor {
+
+    byte[] input;
+
+    String convertInputToText(){
+        return input.toString();
+    }
+
+    void saveResult(){
+
+    }
 }

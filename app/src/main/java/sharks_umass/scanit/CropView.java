@@ -5,4 +5,14 @@ package sharks_umass.scanit;
  */
 
 public class CropView {
+
+    Object picture, croppedPicture;
+
+    void cropPicture(){
+
+    }
+
+    void chooseAction(){
+
+    }
 }

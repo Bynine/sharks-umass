@@ -5,4 +5,15 @@ package sharks_umass.scanit;
  */
 
 public class DataPersistence {
+
+    String result;
+
+    boolean saveToDrive(){
+        return false;
+    }
+
+    boolean saveToPhone(){
+        return false;
+    }
+
 }

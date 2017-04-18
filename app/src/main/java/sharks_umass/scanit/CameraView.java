@@ -5,4 +5,14 @@ package sharks_umass.scanit;
  */
 
 public class CameraView {
+
+    Object picture;
+
+    void takePicture(){
+
+    }
+
+    void zoom(){
+
+    }
 }
