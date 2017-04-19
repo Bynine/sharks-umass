@@ -1,4 +1,4 @@
-package sharks_umass.scanit;
+package sharks_umass.scanit.apis;
 
 /**
  * Created by Tyler on 4/12/2017.
