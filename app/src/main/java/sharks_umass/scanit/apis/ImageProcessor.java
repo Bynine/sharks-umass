@@ -1,4 +1,4 @@
-package sharks_umass.scanit;
+package sharks_umass.scanit.apis;
 
 import android.content.Context;
 import android.graphics.Bitmap;
