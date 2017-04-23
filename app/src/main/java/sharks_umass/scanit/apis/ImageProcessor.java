@@ -51,7 +51,9 @@ public class ImageProcessor extends AppCompatActivity {
     private String convert(){
         TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
         Frame f = frameBuilder.build();
-        return textRecognizer.detect(f).toString();
+        String result = textRecognizer.detect(f).toString();
+        textRecognizer.release();
+        return result;
     }
 
 }
