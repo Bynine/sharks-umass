@@ -3,7 +3,10 @@ package sharks_umass.scanit.apis;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
+
 import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import java.nio.ByteBuffer;
 
@@ -15,8 +18,8 @@ import java.nio.ByteBuffer;
 public class ImageProcessor extends AppCompatActivity {
 
     public static final int NV16 = 16, NV21 = 17, YV12 = 842094169;
-
     private final Frame.Builder frameBuilder = new Frame.Builder();
+    private final String NOTEXT = "No text detected";
     Context context;
 
     /**
@@ -32,7 +35,7 @@ public class ImageProcessor extends AppCompatActivity {
      * @param data ByteBuffer data from image
      * @param width Image width (pixels?)
      * @param height Image height (pixels?)
-     * @param format Byte format. One of NV16, NV21, or YV12.
+     * @param format Byte format. Use the values present in ImageProcessor.
      */
     public String convertInputToText(ByteBuffer data, int width, int height, int format) {
         frameBuilder.setImageData(data, width, height, format);
@@ -51,7 +54,13 @@ public class ImageProcessor extends AppCompatActivity {
     private String convert(){
         TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
         Frame f = frameBuilder.build();
-        String result = textRecognizer.detect(f).toString();
+        SparseArray<TextBlock> items = textRecognizer.detect(f);
+        String result = "";
+        for (int i = 0; i < items.size(); ++i){
+            TextBlock item = items.get(i);
+            result = result.concat(item.getValue());
+        }
+        if (result.isEmpty()) result = NOTEXT;
         textRecognizer.release();
         return result;
     }
