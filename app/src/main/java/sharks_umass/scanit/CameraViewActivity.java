@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -52,8 +53,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadFactory;
 
 public class CameraViewActivity extends AppCompatActivity {
+
+    private class AsyncCaller extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            //this method will be running on background thread so don't update UI frome here
+            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+            getPicture();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Intent i = new Intent(getApplicationContext(), CropViewActivity.class);
+            startActivity(i);
+        }
+
+    }
+
 
     private Size previewsize;
     private Size jpegSizes[]=null;
@@ -83,14 +111,10 @@ public class CameraViewActivity extends AppCompatActivity {
         textureView = (TextureView) findViewById(R.id.texture_view);
         textureView.setSurfaceTextureListener(surfaceTextureListener);
         clickPicture = (ImageButton) findViewById(R.id.click_photo);
-        Log.d("ACTION", "Started");
         clickPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ACTION", "Clicked");
-                getPicture();
-                Intent i = new Intent(getApplicationContext(), CropViewActivity.class);
-                startActivity(i);
+                new AsyncCaller().execute();
             }
         });
     }

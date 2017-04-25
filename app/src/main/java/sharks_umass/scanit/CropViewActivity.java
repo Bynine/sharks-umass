@@ -36,8 +36,6 @@ public class CropViewActivity extends AppCompatActivity implements CropImageView
         cropImageView = (CropImageView) findViewById(R.id.cropImageView);
         cropImageView.setOnCropImageCompleteListener(this);
         cropImageView.setImageBitmap(bmp);
-        Log.d("PATH", Uri.parse(Environment.getExternalStorageDirectory()+"/pic.jpg").toString());
-//        cropImageView.setImageUriAsync(Uri.parse(Environment.getExternalStorageDirectory()+"/pic.jpg"));
         cropImageView.rotateImage(90);
     }
     @Override
