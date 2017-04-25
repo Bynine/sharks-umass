@@ -17,7 +17,8 @@
         android:layout_height="match_parent"
         android:background="#10C7C9">
 
-        <ImageView
+        <com.theartofdev.edmodo.cropper.CropImageView
+            android:id="@+id/cropImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="100dp"

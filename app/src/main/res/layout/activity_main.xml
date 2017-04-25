@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,18 +8,8 @@
     android:fitsSystemWindows="true"
     tools:context="sharks_umass.scanit.CameraViewActivity">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/content_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:showIn="@layout/activity_main"
-        tools:context="sharks_umass.scanit.CameraViewActivity">
-
-        <FrameLayout
-            android:id="@+id/camera_view"
+        <TextureView
+            android:id="@+id/texture_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
@@ -36,9 +26,4 @@
             android:background="@android:color/transparent"
             android:alpha="0.7"
             />
-
-
-    </RelativeLayout>
-
-
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
