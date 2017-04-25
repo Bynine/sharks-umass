@@ -3,6 +3,8 @@ package sharks_umass.scanit;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -39,6 +41,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -59,6 +62,7 @@ public class CameraViewActivity extends AppCompatActivity {
     private CaptureRequest.Builder previewBuilder;
     private CameraCaptureSession previewSession;
     ImageButton clickPicture;
+    private byte[] bytes;
     private static final String TAG = "CameraViewActivity";
 
     private static final int REQUEST_CAMERA_PERMISSION = 200;
@@ -166,8 +170,9 @@ public class CameraViewActivity extends AppCompatActivity {
                     } catch (Exception ee) {
                     }
                     finally {
-                        if(image!=null)
+                        if(image!=null) {
                             image.close();
+                        }
                     }
                 }
                 void save(byte[] bytes) throws IOException {

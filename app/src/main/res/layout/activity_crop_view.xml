@@ -1,21 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#10C7C9"
     tools:context="sharks_umass.scanit.CropViewActivity">
-
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#10C7C9">
 
         <com.theartofdev.edmodo.cropper.CropImageView
             android:id="@+id/cropImageView"
@@ -23,7 +12,6 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="100dp"
             android:layout_alignParentTop="true"
-            android:background="@color/colorPrimary"
             />
 
         <ImageButton
@@ -32,8 +20,8 @@
             android:layout_height="72dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="14dp"
-            android:layout_marginLeft="28dp"
-            android:layout_alignParentLeft="true"
+            android:layout_marginStart="28dp"
+            android:layout_alignParentStart="true"
             android:scaleType="fitCenter"
             android:src="@drawable/define"
             android:background="@android:color/transparent"
@@ -56,13 +44,11 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="14dp"
-            android:layout_marginRight="28dp"
+            android:layout_marginEnd="28dp"
             android:scaleType="fitCenter"
             android:src="@drawable/convert"
             android:background="@android:color/transparent"
             />
-
-    </RelativeLayout>
-</FrameLayout>
+</RelativeLayout>
