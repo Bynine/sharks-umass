@@ -1,4 +1,4 @@
-package sharks_umass.scanit;
+package sharks_umass.scanit.apis;
 
 /* This class is used to hold the result of the Definer class, in Python I'd just return a 3-tuple
  * but forsooth, I have to use Java */

@@ -1,6 +1,10 @@
 package sharks_umass.scanit;
 
 import org.junit.Test;
+
+import sharks_umass.scanit.apis.Definer;
+import sharks_umass.scanit.apis.DefinerResult;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
