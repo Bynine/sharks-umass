@@ -1,6 +1,8 @@
 package sharks_umass.scanit;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -35,8 +37,11 @@ import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -54,6 +59,9 @@ public class CameraViewActivity extends AppCompatActivity {
     private CaptureRequest.Builder previewBuilder;
     private CameraCaptureSession previewSession;
     ImageButton clickPicture;
+    private static final String TAG = "CameraViewActivity";
+
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
 
     private static final SparseIntArray ORIENTATIONS=new SparseIntArray();
     static
@@ -83,10 +91,42 @@ public class CameraViewActivity extends AppCompatActivity {
         });
     }
 
+    TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            //open your camera here
+            openCamera();
+        }
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+            // Transform you image captured size according to the surface width and height
+        }
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            return false;
+        }
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+        }
+    };
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                // close the app
+                Toast.makeText(CameraViewActivity.this, "Sorry!!!, you can't use this app without granting permission", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+    }
+
     void getPicture()
     {
         if(cameraDevice==null)
         {
+            Log.e(TAG, "cameraDevice is null");
             return;
         }
         CameraManager manager=(CameraManager)getSystemService(Context.CAMERA_SERVICE);
@@ -112,6 +152,7 @@ public class CameraViewActivity extends AppCompatActivity {
             capturebuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             int rotation=getWindowManager().getDefaultDisplay().getRotation();
             capturebuilder.set(CaptureRequest.JPEG_ORIENTATION,ORIENTATIONS.get(rotation));
+            final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
             ImageReader.OnImageAvailableListener imageAvailableListener=new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -129,22 +170,15 @@ public class CameraViewActivity extends AppCompatActivity {
                             image.close();
                     }
                 }
-                void save(byte[] bytes)
-                {
-                    File file12=getOutputMediaFile();
-                    OutputStream outputStream=null;
-                    try
-                    {
-                        outputStream=new FileOutputStream(file12);
-                        outputStream.write(bytes);
-                    }catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }finally {
-                        try {
-                            if (outputStream != null)
-                                outputStream.close();
-                        }catch (Exception e){}
+                void save(byte[] bytes) throws IOException {
+                    OutputStream output = null;
+                    try {
+                        output = new FileOutputStream(file);
+                        output.write(bytes);
+                    } finally {
+                        if (null != output) {
+                            output.close();
+                        }
                     }
                 }
             };
@@ -182,7 +216,7 @@ public class CameraViewActivity extends AppCompatActivity {
         {
         }
     }
-    public  void openCamera()
+    public void openCamera()
     {
         CameraManager manager=(CameraManager)getSystemService(Context.CAMERA_SERVICE);
         try
@@ -190,7 +224,13 @@ public class CameraViewActivity extends AppCompatActivity {
             String camerId=manager.getCameraIdList()[0];
             CameraCharacteristics characteristics=manager.getCameraCharacteristics(camerId);
             StreamConfigurationMap map=characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            assert map!= null;
             previewsize = map.getOutputSizes(SurfaceTexture.class)[0];
+            // Add permission for camera and let user grant the permission
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(CameraViewActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
+                return;
+            }
             if(previewsize == null) Log.d("ERROR", "preview null");
             manager.openCamera(camerId,stateCallback,null);
         }
