@@ -62,6 +62,9 @@ public class CameraViewActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Toast toast = Toast.makeText(CameraViewActivity.this, "Processing", Toast.LENGTH_SHORT);
+            toast.setMargin(0, 0.1f);
+            toast.show();
         }
         @Override
         protected Void doInBackground(Void... params) {
