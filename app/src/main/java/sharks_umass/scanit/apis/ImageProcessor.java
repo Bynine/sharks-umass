@@ -1,7 +1,9 @@
 package sharks_umass.scanit.apis;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.google.android.gms.vision.Frame;
@@ -27,22 +29,22 @@ public class ImageProcessor extends AppCompatActivity {
      * @param height Image height (pixels?)
      * @param format Byte format. Use the values present in ImageProcessor.
      */
-    public String convertDataToText(ByteBuffer data, int width, int height, int format) {
+    public String convertDataToText(ByteBuffer data, int width, int height, int format, Context context) {
         frameBuilder.setImageData(data, width, height, format);
-        return convert();
+        return convert(context);
     }
 
     /**
      * Gets text from a Bitmap object
      * @param bitmap Bitmap object of image
      */
-    public String convertBitmapToText(Bitmap bitmap){
+    public String convertBitmapToText(Bitmap bitmap, Context context){
         frameBuilder.setBitmap(bitmap);
-        return convert();
+        return convert(context);
     }
 
-    private String convert(){
-        TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+    private String convert(Context context) {
+        TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
         Frame f = frameBuilder.build();
         SparseArray<TextBlock> items = textRecognizer.detect(f);
         String result = "";
