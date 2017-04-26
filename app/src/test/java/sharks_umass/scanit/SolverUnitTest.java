@@ -13,7 +13,7 @@ public class SolverUnitTest {
     public void testSolver(){
 
         Solver s = new Solver();
-        String answer = s.solve("2x = 4");
+        String answer = s.solve("3 + 2 + 1");
         System.out.println(answer);
     }
 }
