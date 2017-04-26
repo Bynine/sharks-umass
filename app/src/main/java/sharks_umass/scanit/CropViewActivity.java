@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import java.io.File;
 import sharks_umass.scanit.apis.Definer;
 import sharks_umass.scanit.apis.DefinerResult;
 import sharks_umass.scanit.apis.ImageProcessor;
+import sharks_umass.scanit.apis.Solver;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -36,6 +38,83 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
 
     private CropImageView cropImageView;
     private ImageButton convert, define, solve;
+
+    private class SolverAsync extends AsyncTask<Void, Void, Void> {
+
+        private String response = "";
+        private String finalResult = "";
+
+        SolverAsync(String response) {
+            this.response = response;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            //this method will be running on background thread so don't update UI frome here
+            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+
+            Solver solver = new Solver();
+            finalResult = solver.solve(response);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.d("COMPLETE", "ASYNC EXECUTION COMPLETE");
+            Intent i = new Intent(getApplicationContext(), ResultsViewActivity.class);
+            i.putExtra("title", response);
+            i.putExtra("description", finalResult);
+            i.putExtra("imageType", "solve");
+            startActivity(i);
+            cropImageView.clearImage();
+        }
+    }
+
+    private class DefinerAsync extends AsyncTask<Void, Void, Void>
+    {
+        private String response = "";
+        private DefinerResult finalDefinerResult;
+
+        DefinerAsync(String response) {
+            this.response = response;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            //this method will be running on background thread so don't update UI frome here
+            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+
+            Definer definer = new Definer();
+            finalDefinerResult = definer.define(response);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.d("COMPLETE", "ASYNC EXECUTION COMPLETE");
+            Intent i = new Intent(getApplicationContext(), ResultsViewActivity.class);
+            i.putExtra("title", finalDefinerResult.getWord());
+            i.putExtra("description", finalDefinerResult.getDefinition().split(":")[1] + "\n\n" + finalDefinerResult.getExample());
+            i.putExtra("imageType", "define");
+            startActivity(i);
+            cropImageView.clearImage();
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +132,6 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
     }
 
     private void setupPopup(View v) {
-//        cropImageView.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+"/pic.jpg"));
         Intent i = new Intent(getApplicationContext(), ResultsViewActivity.class);
         Bitmap croppedImage = cropImageView.getCroppedImage();
         String response = new ImageProcessor().convertBitmapToText(croppedImage, getApplicationContext());
@@ -62,23 +140,16 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
                 i.putExtra("title", "Document Ready");
                 i.putExtra("description", response);
                 i.putExtra("imageType", "convert");
+                cropImageView.clearImage();
+                startActivity(i);
                 break;
             case R.id.define:
-                Definer definer = new Definer();
-                DefinerResult result = definer.define(response);
-                i.putExtra("title", result.getWord());
-                i.putExtra("description", result.getDefinition() + "\n\n" + result.getExample());
-                i.putExtra("imageType", "convert");
+                new DefinerAsync(response).execute();
                 break;
             case R.id.solve:
-                // solver
-                i.putExtra("title", "Document Ready");
-                i.putExtra("description", response);
-                i.putExtra("imageType", "convert");
+                new SolverAsync(response).execute();
                 break;
         }
-        cropImageView.clearImage();
-        startActivity(i);
     }
 
     @Override

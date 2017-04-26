@@ -50,7 +50,12 @@ public class ImageProcessor extends AppCompatActivity {
         String result = "";
         for (int i = 0; i < items.size(); ++i){
             TextBlock item = items.get(i);
-            result = result.concat(item.getValue());
+            try {
+                result = result.concat(item.getValue());
+            }
+            catch (Exception e) {
+                continue;
+            }
         }
         if (result.isEmpty()) result = NOTEXT;
         textRecognizer.release();
