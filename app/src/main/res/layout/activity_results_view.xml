@@ -4,67 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="sharks_umass.scanit.ResultsViewActivity">
 
-        <ImageView
-            android:id="@+id/previewImage"
-            android:src="@drawable/define"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+    <ImageView
+        android:src="@drawable/convert"
+        android:tint="@color/colorPrimary"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/imageView"
+        />
+
+    <TextView
+        android:text="Title Text"
+        android:textSize="30dp"
+        android:id="@+id/titleView"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imageView"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:text="Description Text"
+        android:textSize="30dp"
+        android:id="@+id/descriptionView"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleView"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        />
+    
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/descriptionView">
+        
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@android:color/transparent"
+            android:text="CANCEL"
+            android:textSize="20sp"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:scaleType="fitCenter"
-            android:tint="@color/colorPrimaryDark"
             />
 
-        <TextView
-            android:id="@+id/titleView"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_toEndOf="@+id/previewImage"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginTop="5dp"
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@android:color/transparent"
+            android:textColor="#10C7C9"
+            android:text="SAVE"
+            android:textSize="20sp"
+            android:layout_alignParentEnd="true"
             />
+        
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/descriptionView"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_below="@+id/titleView"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"
-            />
-
-        <RelativeLayout
-            android:id="@+id/sublayout"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/descriptionView">
-
-                <Button
-                    android:id="@+id/cancel_action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#80FFFFFF"
-                    android:layout_alignParentStart="true"
-                    android:text="CANCEL"
-                    />
-
-                <Button
-                    android:id="@+id/save_action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#80FFFFFF"
-                    android:textColor="#40BEE7"
-                    android:layout_alignParentEnd="true"
-                    android:text="SAVE"
-                    />
-
-        </RelativeLayout>
 </RelativeLayout>

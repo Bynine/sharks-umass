@@ -74,6 +74,11 @@ public class CameraViewActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
+    }
 
     private Size previewsize;
     private Size jpegSizes[]=null;

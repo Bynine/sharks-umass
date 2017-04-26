@@ -26,6 +26,7 @@
         <meta-data
             android:name="com.google.android.vision.API_KEY"
             android:value="AIzaSyDIxKC4msJSIvQyUYz9D3-RELmrpDV_cW8" />
+
         <activity
             android:name=".CameraViewActivity"
             android:label="@string/app_name"
@@ -36,19 +37,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CropViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_crop_view"
             android:theme="@style/FullscreenTheme">
         </activity>
-
         <activity
             android:name=".ResultsViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_results_view"
             android:theme="@style/FullscreenTheme">
-
         </activity>
     </application>
 

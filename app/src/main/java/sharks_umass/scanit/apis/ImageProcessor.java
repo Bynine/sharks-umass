@@ -38,7 +38,7 @@ public class ImageProcessor extends AppCompatActivity {
      * Gets text from a Bitmap object
      * @param bitmap Bitmap object of image
      */
-    public String convertBitmapToText(Bitmap bitmap, Context context){
+    public String convertBitmapToText(Bitmap bitmap, Context context) {
         frameBuilder.setBitmap(bitmap);
         return convert(context);
     }
