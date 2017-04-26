@@ -59,15 +59,15 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
         String response = new ImageProcessor().convertBitmapToText(croppedImage, getApplicationContext());
         switch (v.getId()) {
             case R.id.convert:
-                Log.d("RESPONSE", response);
                 i.putExtra("title", "Document Ready");
                 i.putExtra("description", response);
                 i.putExtra("imageType", "convert");
                 break;
             case R.id.define:
-                // definer API
-                i.putExtra("title", "Document Ready");
-                i.putExtra("description", response);
+                Definer definer = new Definer();
+                DefinerResult result = definer.define(response);
+                i.putExtra("title", result.getWord());
+                i.putExtra("description", result.getDefinition() + "\n\n" + result.getExample());
                 i.putExtra("imageType", "convert");
                 break;
             case R.id.solve:
