@@ -39,12 +39,6 @@ public class Solver {
         query.setInput(input);
 
         try {
-            // For educational purposes, print out the URL we are about to send:
-
-            System.out.println("Query URL:");
-            System.out.println(engine.toURL(query));
-            System.out.println("");
-
             // This sends the URL to the Wolfram|Alpha server, gets the XML result
             // and parses it into an object hierarchy held by the WAQueryResult object.
             WAQueryResult queryResult = engine.performQuery(query);

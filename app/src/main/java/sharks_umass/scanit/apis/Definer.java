@@ -1,5 +1,7 @@
 package sharks_umass.scanit.apis;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,15 +32,11 @@ public class Definer {
     // should this throw something like a WordUnDefinedException?
     // NOTE: THIS GETS 1 DEFINITION OF THE WORD AND 1 USAGE OF A WORD IN A SENTENCE
     public DefinerResult define(String word){
-        if(word.equals("No text detected")) return new DefinerResult("", ":No text detected.", "No example possible.");
+        if(word.equals("No text detected")) return new DefinerResult("", ":Nothing detected.", "No example possible.");
         String str = null;
-        try {
             str = "https://www.dictionaryapi.com/api/v1/references/collegiate/xml/"
-                    + URLEncoder.encode(word, "UTF-8") +"?key=" + API_KEY;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return new DefinerResult("", ":No text detected.", "No example possible.");
-        }
+                    + word +"?key=" + API_KEY;
+            Log.d("URL", str);
 
         try {
             // Create URL
@@ -82,6 +80,9 @@ public class Definer {
                 }
             }
 
+            if(!firstFound) {
+                return new DefinerResult(word.toLowerCase(), defList.item(0).getTextContent(), "No example available.");
+            }
             // Checks for quotes in example
             Element aq = (Element) tempDf.getElementsByTagName("vi").item(0);
             String quote = null;
@@ -94,9 +95,8 @@ public class Definer {
             return new DefinerResult(word.toLowerCase(), tempDf.getTextContent(), sentence);
 
         }
-        catch (Exception e) {
-            return new DefinerResult(word, ":No text detected.", "No example possible.");
-        }
+        catch (SAXException | IOException | ParserConfigurationException e) {}
+        return new DefinerResult(word, ":No.", "No example possible.");
     }
 
     // Move to Utils Class? API class?

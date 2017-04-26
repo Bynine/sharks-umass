@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,7 +39,6 @@ import java.io.OutputStream;
 public class ResultsViewActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
-    private ImageView imageView;
     private TextView titleView, descriptionView;
     private com.google.android.gms.common.api.GoogleApiClient GoogleApiClient;
     public DriveFile file;
@@ -57,14 +57,14 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results_view);
-        imageView = (ImageView) findViewById(R.id.imageView);
         titleView = (TextView) findViewById(R.id.titleView);
         descriptionView = (TextView) findViewById(R.id.descriptionView);
+        descriptionView.setMovementMethod(new ScrollingMovementMethod());
         Intent shared = getIntent();
         titleView.setText(shared.getStringExtra("title"));
         descriptionView.setText(shared.getStringExtra("description"));
         textFile = new File(Environment.getExternalStorageDirectory()
-                + File.separator +"Download"+ File.separator + "test.txt");
+                + "/test.txt");
         verifyStoragePermissions(this);
     }
 

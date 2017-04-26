@@ -147,6 +147,7 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
                 new DefinerAsync(response).execute();
                 break;
             case R.id.solve:
+                Toast.makeText(getApplicationContext(), "Processing Request", Toast.LENGTH_SHORT).show();
                 new SolverAsync(response).execute();
                 break;
         }
