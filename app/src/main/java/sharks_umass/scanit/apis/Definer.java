@@ -87,7 +87,7 @@ public class Definer {
 
             String sentence = (quote != null) ? rawSentence.replace(quote, "-"+quote) : rawSentence;
 
-            return new DefinerResult(word.toLowerCase(), tempDf.getTextContent(), sentence);
+            return new DefinerResult(word.toLowerCase(), tempDf.getTextContent().replace(sentence, ""), sentence);
 
         }
         catch (SAXException | IOException | ParserConfigurationException e) {}
