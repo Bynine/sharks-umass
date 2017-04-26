@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,8 +62,6 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
         Intent shared = getIntent();
         titleView.setText(shared.getStringExtra("title"));
         descriptionView.setText(shared.getStringExtra("description"));
-        textFile = new File(Environment.getExternalStorageDirectory()
-                + "/scanit_export.txt");
         verifyStoragePermissions(this);
     }
 
@@ -93,6 +90,8 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
         super.onStart();
         Log.i(TAG, "In onStart() - connecting...");
         buildGoogleApiClient();
+        textFile = new File(Environment.getExternalStorageDirectory()
+                + "/scanit_export.txt");
     }
 
     /*close connection to Google Play Services*/
