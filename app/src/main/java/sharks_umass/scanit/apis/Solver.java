@@ -14,7 +14,7 @@ import com.wolfram.alpha.WASubpod;
 
 public class Solver {
     private static String appid = "88JQEG-6TYRX8W68V";
-    String Answer;
+    String Answer ="";
 
 
 
@@ -59,17 +59,20 @@ public class Solver {
                 // Got a result.
                 for (WAPod pod : queryResult.getPods()) {
                     if (!pod.isError()) {
-                        Answer = pod.getTitle();
-                        Answer = Answer.concat("\n------------\n");
-                        for (WASubpod subpod : pod.getSubpods()) {
-                            for (Object element : subpod.getContents()) {
-                                if (element instanceof WAPlainText) {
-                                    Answer = Answer.concat(((WAPlainText) element).getText() + "\n");
-                                    Answer = Answer.concat("");
+                        if(!pod.getTitle().equals("Manipulatives illustration")) {
+                            for (WASubpod subpod : pod.getSubpods()) {
+                                for (Object element : subpod.getContents()) {
+                                    if (element instanceof WAPlainText) {
+                                        if(!((WAPlainText) element).getText().equals("")) {
+                                            Answer = Answer.concat(pod.getTitle());
+                                            Answer = Answer.concat("\n------------\n");
+                                            Answer = Answer.concat(((WAPlainText) element).getText() + "\n");
+                                        }
+                                    }
                                 }
                             }
+                            Answer = Answer.concat("\n");
                         }
-                        Answer = Answer.concat("");
                     }
                 }
             }
@@ -77,6 +80,8 @@ public class Solver {
         catch (WAException e) {
             e.printStackTrace();
         }
+
+        Answer = Answer.replace('', '=');
         return Answer;
     }
 }
