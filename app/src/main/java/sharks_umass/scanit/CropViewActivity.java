@@ -24,6 +24,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.theartofdev.edmodo.cropper.CropOverlayView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import sharks_umass.scanit.apis.Definer;
 import sharks_umass.scanit.apis.DefinerResult;
@@ -67,7 +69,7 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Log.d("COMPLETE", "ASYNC EXECUTION COMPLETE");
+            generateTextFile(response, finalResult, 1);
             Intent i = new Intent(getApplicationContext(), ResultsViewActivity.class);
             i.putExtra("title", response);
             i.putExtra("description", finalResult);
@@ -105,7 +107,7 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Log.d("COMPLETE", "ASYNC EXECUTION COMPLETE");
+            generateTextFile(response, finalDefinerResult.getDefinition().split(":")[1] + "." + finalDefinerResult.getExample(), 0);
             Intent i = new Intent(getApplicationContext(), ResultsViewActivity.class);
             i.putExtra("title", finalDefinerResult.getWord());
             i.putExtra("description", finalDefinerResult.getDefinition().split(":")[1] + "\n\n" + finalDefinerResult.getExample());
@@ -151,6 +153,24 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
                 new SolverAsync(response).execute();
                 break;
         }
+    }
+
+    private void generateTextFile(String source, String response, int choice) {
+        try  {
+            PrintWriter writer = new PrintWriter(new File(Environment.getExternalStorageDirectory() + "/scanit_export.txt"));
+            switch (choice) {
+                case 0:
+                    writer.println("Word: " + source + "\n\n" + "Definition: " + response.split(".")[0] + "\n\n" + "Example: " + response.split(".")[1]);
+                    break;
+                case 1:
+                    writer.println("Equation: " + source + "\n\n" + "Results: " + response);
+                    break;
+                default:
+                    writer.println(response);
+            }
+            writer.close();
+        }
+        catch (FileNotFoundException e) {}
     }
 
     @Override

@@ -64,7 +64,7 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
         titleView.setText(shared.getStringExtra("title"));
         descriptionView.setText(shared.getStringExtra("description"));
         textFile = new File(Environment.getExternalStorageDirectory()
-                + "/test.txt");
+                + "/scanit_export.txt");
         verifyStoragePermissions(this);
     }
 
