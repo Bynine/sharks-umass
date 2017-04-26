@@ -138,7 +138,7 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Log.i(TAG, "In onActivityResult() - connecting...");
-            GoogleApiClient.connect();
+            //GoogleApiClient.connect();
         }
     }
 
@@ -180,9 +180,13 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
                         @Override
                         public void run() {
                             OutputStream outputStream = driveContents.getOutputStream();
-                            addTextfileToOutputStream(outputStream);
+                            try {
+                                addTextfileToOutputStream(outputStream);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                                    .setTitle("testFile")
+                                    .setTitle("scanIt_export")
                                     .setMimeType("text/plain")
                                     .setDescription("This is a text file uploaded from device")
                                     .setStarred(true).build();
@@ -195,7 +199,7 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
             };
 
     /*get input stream from text file, read it and put into the output stream*/
-    private void addTextfileToOutputStream(OutputStream outputStream) {
+    private void addTextfileToOutputStream(OutputStream outputStream) throws IOException {
         Log.i(TAG, "adding text file to outputstream...");
         byte[] buffer = new byte[1024];
         int bytesRead;
@@ -205,10 +209,12 @@ public class ResultsViewActivity extends AppCompatActivity implements GoogleApiC
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
+            inputStream.close();
         } catch (IOException e) {
             Log.i(TAG, "problem converting input stream to output stream: " + e);
             e.printStackTrace();
         }
+        outputStream.close();
     }
 
     /*callback after creating the file, can get file info out of the result*/
