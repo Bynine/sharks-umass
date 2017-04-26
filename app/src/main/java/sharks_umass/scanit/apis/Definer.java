@@ -4,19 +4,14 @@ import android.util.Log;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -32,7 +27,7 @@ public class Definer {
     // should this throw something like a WordUnDefinedException?
     // NOTE: THIS GETS 1 DEFINITION OF THE WORD AND 1 USAGE OF A WORD IN A SENTENCE
     public DefinerResult define(String word){
-        if(word.equals("No text detected")) return new DefinerResult("", ":Nothing detected.", "No example possible.");
+        if(word.equals("No text detected")) return new DefinerResult("", ":Nothing detected", "No example possible.");
         String str = null;
             str = "https://www.dictionaryapi.com/api/v1/references/collegiate/xml/"
                     + word +"?key=" + API_KEY;
@@ -60,7 +55,7 @@ public class Definer {
             // IN SOME CASES in <vi>, <aq> has the name of the person attributed to the example
 
             NodeList defList = doc.getElementsByTagName("def");
-            if(defList == null) return new DefinerResult(word, ":Definition not available.", "No example possible.");
+            if(defList == null) return new DefinerResult(word, ":Definition not available", "No example possible");
 
             Element tempDt;
             NodeList tempDtList;
@@ -81,7 +76,7 @@ public class Definer {
             }
 
             if(!firstFound) {
-                return new DefinerResult(word.toLowerCase(), defList.item(0).getTextContent(), "No example available.");
+                return new DefinerResult(word.toLowerCase(), defList.item(0).getTextContent(), "No example available");
             }
             // Checks for quotes in example
             Element aq = (Element) tempDf.getElementsByTagName("vi").item(0);
@@ -92,11 +87,11 @@ public class Definer {
 
             String sentence = (quote != null) ? rawSentence.replace(quote, "-"+quote) : rawSentence;
 
-            return new DefinerResult(word.toLowerCase(), tempDf.getTextContent(), sentence);
+            return new DefinerResult(word.toLowerCase(), tempDf.getTextContent().replace(sentence, ""), sentence);
 
         }
         catch (SAXException | IOException | ParserConfigurationException e) {}
-        return new DefinerResult(word, ":No.", "No example possible.");
+        return new DefinerResult(word, ":Exception Occurred", "No example possible");
     }
 
     // Move to Utils Class? API class?

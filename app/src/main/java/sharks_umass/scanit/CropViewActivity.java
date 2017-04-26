@@ -1,27 +1,19 @@
 package sharks_umass.scanit;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.os.AsyncTaskCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImageView;
-import com.theartofdev.edmodo.cropper.CropOverlayView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -107,7 +99,7 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            generateTextFile(response, finalDefinerResult.getDefinition().split(":")[1] + "." + finalDefinerResult.getExample(), 0);
+            generateTextFile(response, finalDefinerResult.getDefinition().split(":")[1] + "><" + finalDefinerResult.getExample(), 0);
             Intent i = new Intent(getApplicationContext(), ResultsViewActivity.class);
             i.putExtra("title", finalDefinerResult.getWord());
             i.putExtra("description", finalDefinerResult.getDefinition().split(":")[1] + "\n\n" + finalDefinerResult.getExample());
@@ -160,7 +152,13 @@ public class CropViewActivity extends AppCompatActivity implements OnClickListen
             PrintWriter writer = new PrintWriter(new File(Environment.getExternalStorageDirectory() + "/scanit_export.txt"));
             switch (choice) {
                 case 0:
-                    writer.println("Word: " + source + "\n\n" + "Definition: " + response.split(".")[0] + "\n\n" + "Example: " + response.split(".")[1]);
+                    String[] def = response.split("><");
+                    Log.d("LENGTH", Integer.toString(def.length));
+                    Log.d("RESPONSE", response);
+                    if(def.length == 2)
+                    writer.println("Word: " + source + "\n\n" + "Definition: " + response.split("><")[0] + "\n\n" + "Example: " + response.split("><")[1]);
+                    else
+                    writer.println("Word: " + source + "\n\n" + "Definition: " + response);
                     break;
                 case 1:
                     writer.println("Equation: " + source + "\n\n" + "Results: " + response);
