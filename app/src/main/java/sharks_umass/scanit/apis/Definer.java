@@ -76,7 +76,9 @@ public class Definer {
             }
 
             if(!firstFound) {
+                if(defList.item(0) != null)
                 return new DefinerResult(word.toLowerCase(), defList.item(0).getTextContent(), "No example available");
+                else return new DefinerResult(word.toLowerCase(), ":Unable to find definition", "No example available");
             }
             // Checks for quotes in example
             Element aq = (Element) tempDf.getElementsByTagName("vi").item(0);
